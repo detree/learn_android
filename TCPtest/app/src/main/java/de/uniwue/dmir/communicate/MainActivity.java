@@ -1,7 +1,6 @@
 package de.uniwue.dmir.communicate;
 
 import android.app.Activity;
-import android.app.ActionBar;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.util.Log;
@@ -10,9 +9,6 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.os.Build;
-
-import java.util.Date;
 
 
 public class MainActivity extends Activity {
@@ -73,16 +69,18 @@ public class MainActivity extends Activity {
 				@Override
 				public void run() {
 
-
+					long duration=0;
 					while(Globals.connected) {
 						Log.d(TAG, "writing things");
-						Globals.socketOut.write("Time: " + System.currentTimeMillis() + "\n");
+						long prev =System.nanoTime();
+						Globals.socketOut.write("Time: " + duration + "\n");
+						duration = System.nanoTime()-prev;
 						Globals.socketOut.flush();
-						try {
-							Thread.sleep(1000);
-						} catch (InterruptedException e) {
-							e.printStackTrace();
-						}
+//						try {
+//							Thread.sleep(1000);
+//						} catch (InterruptedException e) {
+//							e.printStackTrace();
+//						}
 					}
 				}
 			}.start();
